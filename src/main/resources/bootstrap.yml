@@ -1,0 +1,42 @@
+#spring:
+#  application:
+#    name: product-manager
+#  profiles:
+#    active: ${ENV_TYPE:dev}
+#---
+#spring:
+#  profiles: dev
+#  cloud:
+#    config:
+#      uri: http://${CONFIG_HOST:10.5.2.194}:${CONFIG_PORT:10001}
+#      profile: dev            # profile对应config server所获取的配置文件中的{profile}
+#      label: master           # 指定Git仓库的分支，对应config server所获取的配置文件的{label}
+#---     
+#spring:
+#  profiles: test
+#  cloud:
+#    config:
+#      uri: http://${CONFIG_HOST:10.5.2.243}:${CONFIG_PORT:10001}
+#      profile: test            # profile对应config server所获取的配置文件中的{profile}
+#      label: master           # 指定Git仓库的分支，对应config server所获取的配置文件的{label}
+#--- 
+#server:
+#  port: 11114
+#spring:
+#  profiles: pre
+#  cloud:
+#    config:
+#      uri: http://${CONFIG_HOST:172.30.150.147}:${CONFIG_PORT:10001}
+#      profile: test            # profile对应config server所获取的配置文件中的{profile}
+#      label: master           # 指定Git仓库的分支，对应config server所获取的配置文件的{label}
+#---     
+#spring:
+#  profiles: prod
+#  application:
+#    index: ${random.long}
+#  cloud:
+#    config:
+#      name: ms-product-manager
+#      uri: http://${ENV_CONFIG_IP:localhost}:${ENV_CONFIG_PORT:8888}
+#      profile: ${ENV_TYPE:prod}
+#      label: master

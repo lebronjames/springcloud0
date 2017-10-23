@@ -54,5 +54,18 @@ swagger参数：
 }
 请求结果：{"result":{"resultCode":"1","resultMsg":"返回正确结果"},"list":[{"id":4,"name":"DemoDto4","createTime":1508310113445},{"id":4,"name":"DemoDto4","createTime":1508310113445},{"id":4,"name":"DemoDto4","createTime":1508310113445},{"id":4,"name":"DemoDto4","createTime":1508310113445}]}
 
+9、 SpringJDBC集成
+pom.xml配置；application.yml参数配置
+调用的地方直接注入JdbcTemplate
+http://localhost:8080/jdbc/list
+调用objectMapper.writeValueAsString(object)，返回json格式的字符串（Content-Type:text/html;charset=UTF-8）
+http://localhost:8080/jdbc/channels
+返回json（Content-Type:application/json;charset=UTF-8）
 
+
+
+
+
+
+Mybatis集成
 
