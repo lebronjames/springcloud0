@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.config.TestConfigurationProperties;
 import com.example.demo.dto.DemoDto;
 import com.example.demo.model.HelloRequestModel;
 import com.example.demo.model.HelloResponseModel;
@@ -32,9 +33,17 @@ public class HelloController {
 	@Autowired
 	private HelloService helloService;
 	
+	@Autowired
+	private TestConfigurationProperties testConfigurationProperties;
+	
 	@GetMapping
     public String hello() {
         return "Hello Spring-Boot";
+    }
+	
+	@GetMapping("/config")
+    public String config() {
+        return "Hello,name:"+testConfigurationProperties.getName()+",tech:"+testConfigurationProperties.getTech();
     }
 	
 	@PostMapping("/info")

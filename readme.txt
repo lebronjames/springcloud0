@@ -62,10 +62,76 @@ http://localhost:8080/jdbc/list
 http://localhost:8080/jdbc/channels
 返回json（Content-Type:application/json;charset=UTF-8）
 
+10、 Mybatis集成配置
+1)pom.xml配置:mybatis、通用Mapper、Pagehelper、Druid、Jpa；
+2)SpringCloud0Application主类增加注解@MapperScan("com.example.demo.mapper")
+3)创建Mapper接口，继承通用Mapper接口。extends Mapper<ContractChannel>
+4)把ChannelMapper注入到Service中。
+5)创建实体类映射。@Table(name="pd_channel")、@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)、@Column(name = "channel_code")
+6)配置ContractChannelMapper.xml。
+<mapper namespace="com.example.demo.mapper.ChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Channel" >
+7)列表：http://localhost:8080/channel/list
+详情：http://localhost:8080/channel/getChannelById?id=5
+插入：http://localhost:8080/channel/saveChannel
+swagger参数：{
+  "channelCode": "",
+  "channelDesc": "自动化",
+  "channelName": "自动化",
+  "createTime": "",
+  "isWholeChannel": "",
+  "updateTime": ""
+}
+批量插入：
+
+swagger参数：[{
+  "channelCode": "",
+  "channelDesc": "自动化1",
+  "channelName": "自动化1",
+  "createTime": "",
+  "isWholeChannel": "",
+  "updateTime": ""
+},{
+  "channelCode": "",
+  "channelDesc": "自动化2",
+  "channelName": "自动化2",
+  "createTime": "",
+  "isWholeChannel": "",
+  "updateTime": ""
+},{
+  "channelCode": "",
+  "channelDesc": "自动化3",
+  "channelName": "自动化3",
+  "createTime": "",
+  "isWholeChannel": "",
+  "updateTime": ""
+}
+]
+
+11、 @Configuation使用示例
+@Configuration标注在类上，相当于把该类作为spring的xml配置文件中的<beans>，作用为：配置spring容器(应用上下文)
+@Bean标注在方法上(返回某个实例的方法)，等价于spring的xml配置文件中的<bean>，作用为：注册bean对象
+(1)、@Bean注解在返回实例的方法上，如果未通过@Bean指定bean的名称，则默认与标注的方法名相同； 
+(2)、@Bean注解默认作用域为单例singleton作用域，可通过@Scope(“prototype”)设置为原型作用域； 
+(3)、既然@Bean的作用是注册bean对象，那么完全可以使用@Component、@Controller、@Service、@Ripository等注解注册bean，当然需要配置@ComponentScan注解进行自动扫描。
+
+@Configuation总结
+@Configuation等价于<Beans></Beans>
+@Bean等价于<Bean></Bean>
+@ComponentScan(basePackages="com.dxz.demo")等价于<context:component-scan base-package="com.dxz.demo"/>
+
+12、 自定义属性配置读取
+1)application.yml增加自定义属性配置myconfig.name
+2)@Configuration、@ConfigurationProperties标注在配置类上。@Value("${myconfig.name}")标注在属性上
+3)调取前先注入配置类：@Autowired
+	private TestConfigurationProperties testConfigurationProperties;
+http://localhost:8080/hello/config
+
+13、 
 
 
 
 
 
-Mybatis集成
 

@@ -2,15 +2,15 @@ package com.example.demo.dto;
 
 public class ContractChannelDto {
 
-	private String channelId;
+	private Long channelId;
 	private String name;
 	private String channelDesc;
 	private String isAllChannel;
 	
-	public String getChannelId() {
+	public Long getChannelId() {
 		return channelId;
 	}
-	public void setChannelId(String channelId) {
+	public void setChannelId(Long channelId) {
 		this.channelId = channelId;
 	}
 	public String getName() {

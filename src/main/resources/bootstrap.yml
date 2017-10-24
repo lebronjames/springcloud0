@@ -40,3 +40,7 @@
 #      uri: http://${ENV_CONFIG_IP:localhost}:${ENV_CONFIG_PORT:8888}
 #      profile: ${ENV_TYPE:prod}
 #      label: master
+
+spring:
+  profiles:
+    active: dev

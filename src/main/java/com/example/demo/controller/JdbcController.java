@@ -33,17 +33,17 @@ public class JdbcController {
 	
 	@GetMapping("/list")
 	public String getChannelList() {
-		String sql = "select channel_id,name,channel_desc,is_all_channel from t_contract_channel";
+		String sql = "select id,channel_name,channel_desc,is_whole_channel from pd_channel";
 		
 		List<ContractChannelDto> list = (List<ContractChannelDto>)jdbcTemplate.query(sql, new RowMapper<ContractChannelDto>() {
 
 			@Override
 			public ContractChannelDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ContractChannelDto dto = new ContractChannelDto();
-				dto.setChannelId(rs.getString("channel_id"));
-				dto.setName(rs.getString("name"));
+				dto.setChannelId(rs.getLong("id"));
+				dto.setName(rs.getString("channel_name"));
 				dto.setChannelDesc(rs.getString("channel_desc"));
-				dto.setIsAllChannel(rs.getString("is_all_channel"));
+				dto.setIsAllChannel(rs.getString("is_whole_channel"));
 				return dto;
 			}
 		});
@@ -59,7 +59,7 @@ public class JdbcController {
 			@Override
 			public ContractChannelDto mapRow(ResultSet rs, int rowNum) throws SQLException {
 				ContractChannelDto dto = new ContractChannelDto();
-				dto.setChannelId(rs.getString("channel_id"));
+				dto.setChannelId(rs.getLong("id"));
 				dto.setName(rs.getString("name"));
 				dto.setChannelDesc(rs.getString("channel_desc"));
 				dto.setIsAllChannel(rs.getString("is_all_channel"));

@@ -121,6 +121,13 @@
 			<artifactId>spring-cloud-starter-ribbon</artifactId>
 		</dependency>
 		
+		<!-- jpa注解依赖包 -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
 		<!-- Mybatis 配置 -->
 		<dependency>
 	        <groupId>org.mybatis.spring.boot</groupId>

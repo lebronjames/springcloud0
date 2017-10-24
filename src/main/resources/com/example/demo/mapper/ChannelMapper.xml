@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.ChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.entity.Channel" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="channel_code" property="channelCode" jdbcType="CHAR" />
+    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+    <result column="channel_desc" property="channelDesc" jdbcType="VARCHAR" />
+    <result column="is_whole_channel" property="isWholeChannel" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="channelValus">
+  		b.id,b.channel_code,b.channel_name,b.channel_desc,b.is_whole_channel,b.create_time,b.update_time
+  </sql>
+  
+  <select id="queryAllPdChannel" resultMap="BaseResultMap">
+  		SELECT
+			pdc.id,
+			pdc.channel_code,
+			pdc.channel_name,
+			pdc.channel_desc,
+			pdc.is_whole_channel,
+			pdc.create_time,
+			pdc.update_time
+		FROM
+			pd_channel pdc
+  </select>
+  
+  <insert id="saveChannel" parameterType="com.example.demo.entity.Channel" useGeneratedKeys="true" keyProperty="id">
+  		insert into pd_channel(channel_code,
+		channel_name,
+		channel_desc,
+		is_whole_channel,
+		create_time,
+		update_time) values(#{ channelCode},
+		#{ channelName},
+		#{ channelDesc},
+		#{ isWholeChannel},
+		#{ createTime},
+		#{ updateTime}
+		)
+  </insert>
+  <insert id="saveChannels" parameterType="java.util.List">
+	insert into  pd_channel(channel_code,channel_name,channel_desc,is_whole_channel,create_time,update_time) values
+	  <foreach collection="list" item="item" index="index"
+	   separator=",">
+	   (#{item.channelCode},#{item.channelName},#{item.channelDesc},#{item.isWholeChannel},#{item.createTime},#{item.updateTime})
+	  </foreach>
+	</insert>
+
+  <select id="queryChannelById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	SELECT
+		a.id,
+		a.channel_code,
+		a.channel_name,
+		a.channel_desc,
+		a.is_whole_channel,
+		a.create_time,
+		a.update_time
+	FROM
+		pd_channel a
+	where a.id=#{id}
+  </select>
+</mapper>
