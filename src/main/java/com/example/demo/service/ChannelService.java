@@ -7,6 +7,8 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Channel;
 import com.example.demo.mapper.ChannelMapper;
@@ -33,6 +35,19 @@ public class ChannelService {
 		channelMapper.saveChannel(channel);
 	}
 	
+	@Transactional
+	public void saveChannelTransaction(String channelName,String channelDesc) {
+		Channel channel = new Channel();
+		channel.setChannelName(channelName);
+		channel.setChannelDesc(channelDesc);
+		channel.setCreateTime(new Date());
+		channel.setUpdateTime(new Date());
+		channel.setIsWholeChannel((byte) 0);
+		channel.setChannelCode("" + System.currentTimeMillis());
+		channelMapper.saveChannel(channel);
+//		int i = 1/0;
+	}
+	 
 	public void batchSave(List<Channel> channels) {
 		List<Channel> list = new ArrayList<Channel>();
 		byte isWholeChannel = 0;

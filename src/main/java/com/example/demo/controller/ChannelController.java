@@ -47,6 +47,15 @@ public class ChannelController {
 		}
 	}
 	
+	@GetMapping("/saveChannelTransaction")
+	public void saveChannelTransaction(@RequestParam String channelName,@RequestParam String channelDesc) {
+		try {
+			channelService.saveChannelTransaction(channelName,channelDesc);
+		}catch(Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+	
 	@PostMapping("/batchSave")
 	public void batchSave(@RequestBody Channel[] channels) {
 		try {

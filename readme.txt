@@ -128,10 +128,22 @@ swagger参数：[{
 	private TestConfigurationProperties testConfigurationProperties;
 http://localhost:8080/hello/config
 
-13、 
+13、 项目打包
+1) cd F:\migu910\springCloud0\springcloud0
+2) mvn package -Dmaven.test.skip=true
 
+14、 项目启动通过Profile区分环境
+1) 增加application-test.yml,application-prod.yml两个配置文件
+2) java -jar springCloud0-1.0.0.jar,访问http://localhost:8080/hello/config,结果：Hello,name:yzx-dev,tech:Docker
+3) java -jar springCloud0-1.0.0.jar --spring.profiles.active=test,访问http://localhost:8080/hello/config,结果：Hello,name:yzx-test,tech:Docker
+4) java -jar springCloud0-1.0.0.jar --spring.profiles.active=prod,访问http://localhost:8080/hello/config,结果：Hello,name:yzx-prod,tech:Docker
 
+15、 事务配置
+1) 首先使用注解 @EnableTransactionManagement 开启事务支持后.// 开启注解事务管理，等同于xml配置文件中的 <tx:annotation-driven />
+2) 然后在访问数据库的Service方法上添加注解 @Transactional 便可
+http://localhost:8080/channel/saveChannelTransaction?channelName=name1&channelDesc=desc2222
 
+16、 
 
 
 
