@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Channel;
 import com.example.demo.service.ChannelService;
+import com.example.demo.utils.JsonUtil;
+import com.github.pagehelper.PageInfo;
 
 import io.swagger.annotations.Api;
 
@@ -47,6 +49,11 @@ public class ChannelController {
 		}
 	}
 	
+	/**
+	 * 渠道保存（带事务）
+	 * @param channelName
+	 * @param channelDesc
+	 */
 	@GetMapping("/saveChannelTransaction")
 	public void saveChannelTransaction(@RequestParam String channelName,@RequestParam String channelDesc) {
 		try {
@@ -56,6 +63,10 @@ public class ChannelController {
 		}
 	}
 	
+	/**
+	 * 批量保存
+	 * @param channels
+	 */
 	@PostMapping("/batchSave")
 	public void batchSave(@RequestBody Channel[] channels) {
 		try {
@@ -64,4 +75,18 @@ public class ChannelController {
 			logger.error(e.getMessage());
 		}
 	}
+	
+	/**
+	 * 分页查询
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@GetMapping("/getChannelPage")
+	public String getChannelPage(@RequestParam String pageNum,@RequestParam String pageSize) {
+		PageInfo<Channel> page = channelService.getChannelPage(pageNum, pageSize);
+		return JsonUtil.toJsonString(page);
+	}
+	
+	
 }

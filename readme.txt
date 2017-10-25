@@ -143,7 +143,46 @@ http://localhost:8080/hello/config
 2) 然后在访问数据库的Service方法上添加注解 @Transactional 便可
 http://localhost:8080/channel/saveChannelTransaction?channelName=name1&channelDesc=desc2222
 
-16、 
+16、 通用Mapper插件集成
+1) 分页
+PageHelper.startPage(num, size);
+return new PageInfo<Channel>(channelMapper.queryAllPdChannel())
+http://localhost:8080/channel/getChannelPage?pageNum=1&pageSize=2
+
+2) 通用接口：根据主键删除
+http://localhost:8080/tk/tkDeleteByPrimaryKey?id=90182
+返回值1
+
+3) 通用接口：根据实体删除
+http://localhost:8080/tk/tkDeleteBean?id=90183
+返回值1
+
+4) 通用接口：根据条件删除
+http://localhost:8080/tk/tkDeleteByExample?fieldName=channelCode&fieldValue=15088381869745
+返回值1
+前提：pom.xml中热部署spring-boot-devtools必须注释掉，
+问题解决：​restartClassLoader是spring-boot-devtools这个包里面的，只是为了开发时热部署使用，弃用该包后程序运行正常。
+
+5) 通用接口：新增
+http://localhost:8080/tk/tkInsert?channelName=test1&channelDesc=test1
+返回值1
+
+6) 通用接口：根据主键查询实体是否存在
+http://localhost:8080/tk/tkExistWithPrimaryKey?id=90183
+返回值:true/false
+
+7) 通用接口：根据条件筛选列表
+http://localhost:8080/tk/tkListByCondition?fieldName=channelName&fieldValue=test2
+前提：pom.xml中热部署spring-boot-devtools必须注释掉，
+问题解决：​restartClassLoader是spring-boot-devtools这个包里面的，只是为了开发时热部署使用，弃用该包后程序运行正常。
+模糊查询的坑：example.createCriteria().andLike(fieldName, "%"+fieldValue+"%");
+
+17、 
+
+
+
+
+
 
 
 
