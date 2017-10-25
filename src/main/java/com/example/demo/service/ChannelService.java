@@ -37,7 +37,6 @@ public class ChannelService {
 		channel.setIsWholeChannel((byte) 0);
 		channel.setChannelCode("" + System.currentTimeMillis());
 		channelMapper.saveChannel(channel);
-//		channelMapper.
 	}
 	
 	@Transactional

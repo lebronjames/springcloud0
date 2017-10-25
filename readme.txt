@@ -177,12 +177,41 @@ http://localhost:8080/tk/tkListByCondition?fieldName=channelName&fieldValue=test
 问题解决：​restartClassLoader是spring-boot-devtools这个包里面的，只是为了开发时热部署使用，弃用该包后程序运行正常。
 模糊查询的坑：example.createCriteria().andLike(fieldName, "%"+fieldValue+"%");
 
-17、 
+17、 单元测试Junit、MockMvc整合
+1) 测试类上增加注解
+@RunWith(SpringJUnit4ClassRunner.class) // SpringJUnit支持，由此引入Spring-Test框架支持！ 
+@SpringBootTest(classes = SpringCloud0Application.class) // 指定我们SpringBoot工程的Application启动类
+@WebAppConfiguration // 由于是Web项目，Junit需要模拟ServletContext，因此我们需要给我们的测试类加上@WebAppConfiguration。
 
+2) post请求
+String content = JsonUtil.toJsonString(channel);
+MvcResult result = mvc
+		.perform(MockMvcRequestBuilders.post("/channel/saveChannel")
+				//.header(name, values) //设置请求报文头
+				.contentType(MediaType.APPLICATION_JSON_UTF8).content(content))
+		.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+int responseCode = result.getResponse().getStatus();
+Assert.assertEquals(responseCode, 200);
+String responseBody = result.getResponse().getContentAsString();
 
+3)get请求
+MvcResult result = mvc
+		.perform(MockMvcRequestBuilders.get("/tk/tkListByCondition")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.param("fieldName", "channelName").param("fieldValue", "test"))
+		.andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+int responseCode = result.getResponse().getStatus();
+Assert.assertEquals(responseCode, 200);
+String responseBody = result.getResponse().getContentAsString();
 
+18、 @PathVariable使用
+1) @GetMapping("/getChannelBean/{id}")
+2) public Channel getChannelBean(@PathVariable("id") String id) {..}
+http://localhost:8080/channel/getChannelBean/90178
 
+19、 定时任务配置
+1) 定时配置类上增加注解@Configuration、@EnableScheduling
+2) 方法上增加调度器@Scheduled(cron="0/20 * * * * ?")
 
-
-
+20、 
 
