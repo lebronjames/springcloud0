@@ -246,4 +246,127 @@ http://10.5.2.241:8082/redis/operation/batchSet
 7) 500线程    1000请求 平均时长 5ms 最大时间  68ms 错误率 0
 8) 1000线程   1000请求 平均时长 4ms 最大时间  102ms  错误率 0
 
+23、 原生态注解
+1) 定义注解类
+@Documented //表示是否将注解信息添加在java文档中
+@Retention(RetentionPolicy.RUNTIME)//始终不会丢弃，运行期也保留该注解，因此可以使用反射机制读取该注解的信息。我们自定义的注解通常使用这种方式。
+@Target(ElementType.METHOD)//表示该注解用于方法
+public @interface AopAspectAnnotation {String value() default "";}
+2) 自定义注解修饰方法
+@AopAspectAnnotation(value="annotationValue",name="annotationName")
+	@GetMapping("/show")
+	public void show() {...}
+3) 获取注解信息
+Class aopAspectController = AopAspectController.class;
+for(Method method : aopAspectController.getMethods()) {
+	AopAspectAnnotation aopAspectAnnotation = method.getAnnotation(AopAspectAnnotation.class);//返回注解信息
+	if(aopAspectAnnotation != null) {
+		logger.info("---Method Name : {}",method.getName());//show
+		logger.info("---Annotation Name : {}",aopAspectAnnotation.name());//annotationName
+		logger.info("---Annotation Value : {}",aopAspectAnnotation.value());//annotationValue
+	}
+}
+
+字段注解
+http://localhost:8080/fruit/info
+
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface FruitName {String value() default "";}
+
+Field[] fields = AppleModel.class.getDeclaredFields();
+for(Field field : fields) {
+	if(field.isAnnotationPresent(FruitName.class)) {//判断指定类型的注释是否存在于此元素上
+		FruitName fruitName = (FruitName)field.getAnnotation(FruitName.class); 
+		strFruitName = strFruitName + fruitName.value();
+
+24、 Aop Aspect切面类处理自定义注解
+1) pom.xml中添加依赖
+spring-boot-starter-aop
+2) 创建自定义注解
+@Documented //表示是否将注解信息添加在java文档中
+@Retention(RetentionPolicy.RUNTIME)//始终不会丢弃，运行期也保留该注解，因此可以使用反射机制读取该注解的信息。我们自定义的注解通常使用这种方式。
+@Target(ElementType.METHOD)//表示该注解用于方法
+public @interface AopAspectAnnotation {String value() default "";String name() default "";}
+3) 创建Aspect切面类
+@Aspect //aop切面类注解
+@Order(-99) //控制多个Aspect的执行顺序，越小越先执行
+@Component
+public class AspectAop {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AspectAop.class);
+
+	//拦截被AopAspectAnnotation注解的方法；如果你需要拦截指定package指定规则名称的方法，可以使用表达式execution(...)
+	@Before("@annotation(aaAnnotation)")
+	public void beforeAop(JoinPoint joinPoint, AopAspectAnnotation aaAnnotation) throws Throwable {
+		logger.info("-AspectAop##beforeAop##name:"+aaAnnotation.name()+",value:"+aaAnnotation.value());
+	}
+	
+	@After("@annotation(aaAnnotation)")
+	public void afterAop(JoinPoint joinPoint, AopAspectAnnotation aaAnnotation) throws Throwable {
+		logger.info("-AspectAop##afterAop##name:"+aaAnnotation.name()+",value:"+aaAnnotation.value());
+	}
+}
+4) 创建方法，使用自定义注解
+@AopAspectAnnotation(value="annotationValue",name="annotationName")
+@GetMapping("/show")
+public void show() {
+	logger.info("-----------AopAspectController##show");
+}
+
+
+25、 AOP记录Web请求日志
+1) 使用@Aspect注解将一个java类定义为切面类 
+2) 使用@Pointcut定义一个切入点，可以是一个规则表达式，比如下例中某个package下的所有函数，也可以是一个注解等。
+@Aspect
+@Component
+public class WebLogAspect {
+
+	private static final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
+	
+	//使用@Pointcut定义一个切入点，可以是一个规则表达式，比如下例中某个package下的所有函数
+	//两个..代表所有子目录，最后括号里的两个..代表所有参数
+	@Pointcut("execution(public * com.example.demo..controller.*.*(..))")
+	public void logPointCut() {
+	}
+	
+	@Before("logPointCut()")
+	public void doBefore(JoinPoint joinPoint) throws Throwable {
+		// 接收到请求，记录请求内容
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        
+        // 记录下请求内容
+        logger.info("请求地址 :"+request.getRequestURI().toString());
+        logger.info("HTTP METHOD :"+request.getMethod());
+        logger.info("IP :"+request.getRemoteAddr());
+        logger.info("CLASS_METHOD :"+joinPoint.getSignature().getDeclaringTypeName()
+        			+"."+joinPoint.getSignature().getName());
+        logger.info("参数 :"+Arrays.toString(joinPoint.getArgs()));
+	}
+	
+	// returning的值和doAfterReturning的参数名一致
+	@AfterReturning(returning="ret", pointcut="logPointCut()")
+	public void doAfterReturning(Object ret) throws Throwable {
+		// 处理完请求，返回内容
+		logger.info("返回值 :"+ret);
+	}
+	
+	@Around("logPointCut()")
+	public Object doAroud(ProceedingJoinPoint pjp) throws Throwable {
+		long startTime = System.currentTimeMillis();
+		Object object = pjp.proceed();// object 为方法的返回值
+		logger.info("方法请求耗时 : " + (System.currentTimeMillis() - startTime));
+		return object;
+	}
+}
+http://localhost:8080/aopAspect/hello
+
+26、 
+
+
+
+
+
 
