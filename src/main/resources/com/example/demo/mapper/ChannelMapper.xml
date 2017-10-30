@@ -26,6 +26,41 @@
 		FROM
 			pd_channel pdc
   </select>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from pd_channel where id = #{id}
+	</delete>
+	
+	<update id="updateChannel" parameterType="com.example.demo.entity.Channel">
+    	UPDATE pd_channel
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="channelCode!=null">
+				channel_code = #{channelCode},
+			</if>
+			<if test="channelName!=null">
+				channel_name = #{channelName},
+			</if>
+			<if test="channelDesc!=null">
+				channel_desc = #{channelDesc},
+			</if>
+			<if test="isWholeChannel!=null">
+				is_whole_channel = #{isWholeChannel},
+			</if>
+			update_time = NOW() 
+		</trim>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateChannelName" parameterType="com.example.demo.entity.Channel">
+    	UPDATE pd_channel
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="channelName!=null">
+				channel_name = #{channelName},
+			</if>
+			update_time = NOW() 
+		</trim>
+		WHERE id = #{id}
+	</update>
   
   <insert id="saveChannel" parameterType="com.example.demo.entity.Channel" useGeneratedKeys="true" keyProperty="id">
   		insert into pd_channel(channel_code,
@@ -61,5 +96,19 @@
 	FROM
 		pd_channel a
 	where a.id=#{id}
+  </select>
+  
+  <select id="queryChannelByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT
+		a.id,
+		a.channel_code,
+		a.channel_name,
+		a.channel_desc,
+		a.is_whole_channel,
+		a.create_time,
+		a.update_time
+	FROM
+		pd_channel a
+	where a.channel_code=#{channelCode}
   </select>
 </mapper>

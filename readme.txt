@@ -17,8 +17,10 @@ http://www.cnblogs.com/youwillsee/p/6659079.html
 映射地址：http://localhost:8080/test.xlsx
 
 5、 SLF日志集成
-配置logback.xml文件；Logger调用
+1) 配置logback.xml文件；Logger调用
 日志多参数配置：logger.info("初始化信息:{},时间:{}",sce.getServletContext().getServerInfo(),new Date());
+2) 项目执行Mybatis脚本看不到日志，解决方式
+在application.properties中，配置logging.level.com.example.demo=DEBUG（名称以logging.level开头，后面跟要输入日志的包名）
 
 6、 swagger配置
 pom.xml配置依赖；添加Swagger配置类SwaggerConfiguration
@@ -213,5 +215,35 @@ http://localhost:8080/channel/getChannelBean/90178
 1) 定时配置类上增加注解@Configuration、@EnableScheduling
 2) 方法上增加调度器@Scheduled(cron="0/20 * * * * ?")
 
-20、 
+20、 Redis单机集成
+1) 单记录插入：StringRedisTemplate.opsForValue().set("v5", "ni hao diao");
+http://localhost:8080/redis/operation/get
+2) 单记录查询：stringRedisTemplate.opsForValue().get(SingleRedisConstants.REDIS_PREFIX+"v5");
+http://localhost:8080/redis/operation/getOne
+
+21、 性能测试
+1) Redis 单条记录查询耗时：1105341ns,1ms
+http://10.5.2.241:8082/redis/operation/getOne
+2) Redis 批量记录查询10000次，耗时：5558ms
+http://10.5.2.241:8082/redis/operation/batchGet
+3) Redis 10个线程读10000数据，耗时：80000ms（80秒）
+http://10.5.2.241:8082/redis/operation/threadPoolGet
+
+4) Redis 单值插入耗时：2455670ns,2ms
+http://10.5.2.241:8082/redis/operation/set
+5) Redis 批量插入10000次，耗时：5462ms
+http://10.5.2.241:8082/redis/operation/batchSet
+
+22、 Jemter性能测试
+调整tomcat 最大线程数 max-threads: 200
+1) 1 线程     1000请求 平均时长  2ms  最大时间 62ms  错误率 0
+2) 100线程 	  1000请求 平均时长 1ms  最大时间  27ms  错误率 0
+3) 300线程    1000请求 平均时长 2ms 最大时间 47ms  错误率 0
+4) 500线程    1000请求 平均时长 35ms 最大时间 783ms  错误率 0
+5) 1000线程   1000请求 平均时长 10ms  最大时间 284ms  错误率 0
+调整tomcat最大线程数 max-threads: 800
+6) 300线程    1000请求 平均时长 5ms 最大时间 52ms  错误率 0
+7) 500线程    1000请求 平均时长 5ms 最大时间  68ms 错误率 0
+8) 1000线程   1000请求 平均时长 4ms 最大时间  102ms  错误率 0
+
 

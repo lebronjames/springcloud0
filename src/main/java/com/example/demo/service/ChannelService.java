@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,18 @@ public class ChannelService {
 	
 	public Channel queryChannelById(String id) {
 		return channelMapper.queryChannelById(Long.valueOf(id));
+	}
+	
+	public Channel queryChannelByCode(String channelCode) {
+		return channelMapper.queryChannelByCode(channelCode);
+	}
+	
+	public void deleteById(String id) {
+		channelMapper.deleteById(Long.valueOf(id));
+	}
+	
+	public void updateChannelName(String id, String channelName) {
+		channelMapper.updateChannelName(Long.valueOf(id), channelName);
 	}
 	
 	public void saveChannel(Channel channel) {

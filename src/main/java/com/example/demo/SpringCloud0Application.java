@@ -3,6 +3,7 @@ package com.example.demo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +19,7 @@ import com.example.demo.config.TestConfigurationBean;
 //添加自动扫描注解，basePackages为包路径。初始化@Component的bean
 @ComponentScan(basePackages = "com.example.demo")
 @EnableTransactionManagement // 开启注解事务管理，等同于xml配置文件中的 <tx:annotation-driven />
+@EnableCaching //开启缓存功能
 public class SpringCloud0Application {
 
 	public static void main(String[] args) {

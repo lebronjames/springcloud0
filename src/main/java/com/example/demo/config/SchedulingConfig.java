@@ -22,7 +22,7 @@ public class SchedulingConfig {
 
 	private static final Logger logger = LoggerFactory.getLogger(SchedulingConfig.class);
 	
-	@Scheduled(cron="0/20 * * * * ?")
+//	@Scheduled(cron="0/20 * * * * ?")
 	public void scheduler() {
 		logger.info("----------------------scheduler on :{}",System.currentTimeMillis());
 	}
